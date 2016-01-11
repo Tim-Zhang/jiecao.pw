@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fullscreen</title>
+  <style>
+    html, body { width: 100%; height: 100%; margin: 0; padding: 0;}
+    body {color: #fff; font-family: "Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei","微软雅黑",tahoma,arial,simsun,"宋体"; text-align: center;}
+    h1 { font-size: 9vw; margin-top: 20vh; }
+    h2 { font-size: 2.5vw;}
+
+    :not(:-moz-full-screen) body {background: #313131 !important;}
+    :not(:-webkit-full-screen) body  {background: #313131 !important;}
+
+    :-moz-full-screen div { display: none; }
+    :-webkit-full-screen div { display: none; }
+
+  </style>
+</head>
+<body onclick="clickAnywhere()">
+  <div>
+    <h1>显示器节操测试</h1><h2>单击任意处开始，测试中单击可切换屏幕颜色</h2>
+  </div>
+  <script>
+    var currentBgIdx = 0;
+    var bgList = ['black', 'white', 'green', 'blue', 'yellow'];
+
+    var enterMethods = ['requestFullScreen', 'msRequestFullscreen','webkitRequestFullScreen','mozRequestFullScreen'];
+    var exitMethods = ['exitFullscreen', 'msExitFullscreen', 'mozCancelFullScreen', 'webkitExitFullscreen'];
+
+    var tryRun = function(calls, context) {
+      for(var i = 0; i < calls.length; i++){
+          if(context[calls[i]]){
+              context[calls[i]]();
+              return;
+          }
+      }
+    }
+
+    var enterFullscreen = function(){
+      tryRun(enterMethods, document.documentElement);
+      currentBgIdx = 0;
+      document.body.style.background = bgList[0]
+    };
+
+    var exitFullscreen = function() {
+      tryRun(exitMethods, document);
+      currentBgIdx = 0;
+    }
+
+    var clickAnywhere = function() {
+      if (!document.fullscreenElement &&!document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement)
+        enterFullscreen();
+      else
+        if (bgList[ currentBgIdx + 1 ])
+          document.body.style.background = bgList[ ++currentBgIdx ];
+        else
+          exitFullscreen();
+    }
+
+  </script>
+</body>
+</html>
