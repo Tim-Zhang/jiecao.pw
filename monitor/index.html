@@ -22,11 +22,21 @@
     <h1>显示器测试</h1><h2>单击任意处开始，然后单击切换颜色</h2>
   </div>
   <script>
-    var currentBgIdx = 0;
-    var bgList = ['black', 'white', 'red', 'green', 'blue'];
+    var currentBgIdx = 0
+      , defaultBgList = ['black', 'white', 'red', 'green', 'blue']
+      , bgList
+      , enterMethods = ['requestFullScreen', 'msRequestFullscreen','webkitRequestFullScreen','mozRequestFullScreen']
+      , exitMethods = ['exitFullscreen', 'msExitFullscreen', 'mozCancelFullScreen', 'webkitExitFullscreen']
 
-    var enterMethods = ['requestFullScreen', 'msRequestFullscreen','webkitRequestFullScreen','mozRequestFullScreen'];
-    var exitMethods = ['exitFullscreen', 'msExitFullscreen', 'mozCancelFullScreen', 'webkitExitFullscreen'];
+    var getParameterByName = function(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+          results = regex.exec(location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    var colors = getParameterByName('color') || getParameterByName('colors');
+    bgList = colors ? colors.split(',') : defaultBgList;
 
     var tryRun = function(calls, context) {
       for(var i = 0; i < calls.length; i++){
