@@ -66,7 +66,7 @@
         document.querySelector('h1').innerHTML = name;
       }
 
-      var gogogo = function() {
+      var gogogo = function(timeout) {
         var last   = getParameterByName('last') || ''
           , middle = getParameterByName('middle') || ''
           , length = getParameterByName('length') || 2
@@ -74,7 +74,7 @@
 
         show(last + middle + name);
 
-        going = setTimeout(gogogo, 200);
+        going = setTimeout(function() { gogogo(150) }, isFinite(timeout) ? timeout : 500);
 
       }
 
